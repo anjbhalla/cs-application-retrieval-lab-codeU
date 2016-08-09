@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="Anjulees-MacBook-Air.local" name="com.flatironschool.javacs.WikiSearchTest" skipped="0" tests="4" time="0.101" timestamp="2016-08-01T03:52:24">
+<testsuite errors="0" failures="0" hostname="Anjulees-MacBook-Air.local" name="com.flatironschool.javacs.WikiSearchTest" skipped="0" tests="4" time="0.474" timestamp="2016-08-02T21:21:57">
   <properties>
     <property name="java.vendor" value="Oracle Corporation" />
     <property name="sun.java.launcher" value="SUN_STANDARD" />
@@ -11,7 +11,7 @@
     <property name="os.name" value="Mac OS X" />
     <property name="sun.boot.class.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib/resources.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib/rt.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib/sunrsasign.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib/jsse.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib/jce.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib/charsets.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib/jfr.jar:/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/classes" />
     <property name="env.TMPDIR" value="/var/folders/06/yl2hlndx67g3jxp6l7tj60_00000gn/T/" />
-    <property name="env.PWD" value="/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12" />
+    <property name="env.PWD" value="/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12" />
     <property name="env.LANG" value="en_US.UTF-8" />
     <property name="java.vm.specification.vendor" value="Oracle Corporation" />
     <property name="ant.home" value="/usr/local/Cellar/ant/1.9.6/libexec" />
@@ -25,7 +25,6 @@
     <property name="env.__CF_USER_TEXT_ENCODING" value="0x1F5:0x0:0x0" />
     <property name="env._system_type" value="Darwin" />
     <property name="env.PATH" value="/Users/Anjulee/.rvm/gems/ruby-2.3.0/bin:/Users/Anjulee/.rvm/gems/ruby-2.3.0@global/bin:/Users/Anjulee/.rvm/rubies/ruby-2.3.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/Anjulee/.rvm/bin" />
-    <property name="env.JAVA_MAIN_CLASS_15699" value="org.apache.tools.ant.launch.Launcher" />
     <property name="user.language" value="en" />
     <property name="env.rvm_prefix" value="/Users/Anjulee" />
     <property name="sun.boot.library.path" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib" />
@@ -44,7 +43,7 @@
     <property name="sun.jnu.encoding" value="UTF-8" />
     <property name="env.rvm_bin_path" value="/Users/Anjulee/.rvm/bin" />
     <property name="file.encoding.pkg" value="sun.io" />
-    <property name="env.SHLVL" value="3" />
+    <property name="env.SHLVL" value="2" />
     <property name="file.separator" value="/" />
     <property name="env._system_version" value="10.10" />
     <property name="java.specification.name" value="Java Platform API Specification" />
@@ -80,8 +79,8 @@
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
     <property name="java.class.path" value="/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/bin:/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/lib/jedis-2.8.0.jar:/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/lib/jsoup-1.8.3.jar:/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/lib/junit-4.12.jar:/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/lib/hamcrest-core-1.3.jar:/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/lib/hamcrest-library-1.3.jar:/usr/local/Cellar/ant/1.9.6/libexec/lib/ant-launcher.jar:/usr/local/Cellar/ant/1.9.6/libexec/lib/ant.jar:/usr/local/Cellar/ant/1.9.6/libexec/lib/ant-junit.jar:/usr/local/Cellar/ant/1.9.6/libexec/lib/ant-junit4.jar" />
     <property name="ant.version" value="Apache Ant(TM) version 1.9.6 compiled on June 29 2015" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner com.flatironschool.javacs.WikiSearchTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/junit/TEST-com.flatironschool.javacs.WikiSearchTest.xml formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter crashfile=/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/junitvmwatcher4234934611831902019.properties propsfile=/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/junit7617778964603980956.properties" />
-    <property name="env.TERM_SESSION_ID" value="F2C49605-0173-4950-9249-D6430054F831" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner com.flatironschool.javacs.WikiSearchTest skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false formatter=org.apache.tools.ant.taskdefs.optional.junit.OutErrSummaryJUnitResultFormatter showoutput=false outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=false formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/junit/TEST-com.flatironschool.javacs.WikiSearchTest.xml formatter=org.apache.tools.ant.taskdefs.optional.junit.PlainJUnitResultFormatter crashfile=/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/junitvmwatcher2259214853303117246.properties propsfile=/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12/junit2989582040560230109.properties" />
+    <property name="env.TERM_SESSION_ID" value="7A7C7E32-CB7E-41CE-89BA-003314C80A0E" />
     <property name="ant.file.type.JavaCS" value="file" />
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="ant.file.type" value="file" />
@@ -96,7 +95,7 @@
     <property name="os.arch" value="x86_64" />
     <property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment" />
     <property name="java.ext.dirs" value="/Users/Anjulee/Library/Java/Extensions:/Library/Java/JavaVirtualMachines/jdk1.8.0_77.jdk/Contents/Home/jre/lib/ext:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java" />
-    <property name="user.dir" value="/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12" />
+    <property name="user.dir" value="/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12" />
     <property name="line.separator" value="&#xa;" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
     <property name="basedir" value="/Users/Anjulee/Desktop/Bowdoin/CompSci/codeU_lab12/javacs-lab12" />
@@ -106,10 +105,11 @@
     <property name="file.encoding" value="UTF-8" />
     <property name="java.specification.version" value="1.8" />
     <property name="ant.project.invoked-targets" value="test" />
+    <property name="env.JAVA_MAIN_CLASS_16945" value="org.apache.tools.ant.launch.Launcher" />
   </properties>
   <testcase classname="com.flatironschool.javacs.WikiSearchTest" name="testAnd" time="0.007" />
   <testcase classname="com.flatironschool.javacs.WikiSearchTest" name="testMinus" time="0.0" />
-  <testcase classname="com.flatironschool.javacs.WikiSearchTest" name="testSort" time="0.001" />
+  <testcase classname="com.flatironschool.javacs.WikiSearchTest" name="testSort" time="0.0" />
   <testcase classname="com.flatironschool.javacs.WikiSearchTest" name="testOr" time="0.0" />
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

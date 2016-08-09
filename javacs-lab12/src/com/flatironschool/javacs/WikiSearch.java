@@ -30,7 +30,7 @@ public class WikiSearch {
 			if (int1 == int2) {
 				return 0;
 			}		
-			else if (int1 > int2) {
+			else if (int1 < int2) {
 				return 1;
 			}
 			else {
@@ -156,7 +156,6 @@ public class WikiSearch {
 	 */
 	public List<Entry<String, Integer>> sort() {
         // FILL THIS IN!
-		//Set<Entry<String, Integer>> entrySet = map.entrySet();
 		List<Entry<String, Integer>> entries = new LinkedList<Entry<String, Integer>>();
 		entries.addAll(map.entrySet());
 		Collections.sort(entries, comparator);
@@ -197,5 +196,11 @@ public class WikiSearch {
 		System.out.println("Query: " + term1 + " AND " + term2);
 		WikiSearch intersection = search1.and(search2);
 		intersection.print();
+
+		// search for the
+		String term3 = "the";
+		System.out.println("Query: " + term3);
+		WikiSearch search3 = search(term3, index);
+		search3.print();
 	}
 }

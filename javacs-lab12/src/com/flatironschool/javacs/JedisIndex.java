@@ -326,8 +326,16 @@ public class JedisIndex {
 		Elements paragraphs = wf.readWikipedia(url);
 		index.indexPage(url, paragraphs);
 		
-		url = "https://en.wikipedia.org/wiki/Programming_language";
-		paragraphs = wf.readWikipedia(url);
-		index.indexPage(url, paragraphs);
+		String source = "https://en.wikipedia.org/wiki/Programming_language";
+		WikiCrawler wc = new WikiCrawler(source, index);
+
+		String res;
+		do {
+			res = wc.crawl(false);
+		//break;
+		} while (res == null);
+		
+		//paragraphs = wf.readWikipedia(url);
+		//index.indexPage(url, paragraphs);
 	}
 }
