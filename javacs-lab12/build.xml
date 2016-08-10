@@ -346,6 +346,11 @@
             <classpath refid="JavaCS.classpath"/>
         </java>
     </target>
+    <target name="WikiSearcher">
+	<java classname="com.flatironschool.javacs.WikiSearcher" failonerror="true" fork="yes">
+	    <classpath refid="JavaCS.classpath"/>
+	</java>
+    </target>
     <target name="LinkedListExample">
         <java classname="com.flatironschool.javacs.LinkedListExample" failonerror="true" fork="yes">
             <classpath refid="JavaCS.classpath"/>

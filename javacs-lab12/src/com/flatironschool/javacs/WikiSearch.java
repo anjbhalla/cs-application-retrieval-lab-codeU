@@ -6,8 +6,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.lang.Math;
 
 import redis.clients.jedis.Jedis;
 
@@ -19,7 +21,8 @@ import redis.clients.jedis.Jedis;
 public class WikiSearch {
 	
 	// map from URLs that contain the term(s) to relevance score
-	private Map<String, Integer> map;
+	private Map<String, Integer> tfMap;
+	private Map<String, Double> tfidfMap;
 
 	Comparator<Entry<String, Integer>> comparator = new Comparator<Entry<String, Integer>>() {
 		@Override
@@ -39,16 +42,48 @@ public class WikiSearch {
 		}
 	};
 
+	Comparator<Entry<String, Double>> idfComparator = new Comparator<Entry<String, Double>>() {
+                @Override
+                public int compare(Entry<String, Double> entry1, Entry<String, Double> entry2) {
+                        Double val1 = entry1.getValue();
+                        Double val2 = entry2.getValue();
+
+                        if (val1 == val2) {
+                                return 0;
+                        }
+                        else if (val1 < val2) {
+                                return 1;
+                        }
+                        else {
+                                return -1;
+                        }
+                }
+        };
+
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param map
 	 */
-	public WikiSearch(Map<String, Integer> map) {
-		this.map = map;
+	public WikiSearch(Map<String, Integer> tfMap) {
+		this.tfMap = tfMap;
+	}
+
+	public WikiSearch(Map<String, Double> tfidfMap, String term) {
+		this.tfidfMap = tfidfMap;
+	}
+
+	public WikiSearch(Map<String, Integer> tfMap, Map<String, Double> tfidfMap) {
+		this.tfMap = tfMap;
+		this.tfidfMap = tfidfMap;
 	}
 	
+	public WikiSearch() {
+		this.tfMap = new HashMap<String, Integer>();
+		this.tfidfMap = new HashMap<String, Double>();
+	}
+
 	/**
 	 * Looks up the relevance of a given URL.
 	 * 
@@ -56,7 +91,7 @@ public class WikiSearch {
 	 * @return
 	 */
 	public Integer getRelevance(String url) {
-		Integer relevance = map.get(url);
+		Integer relevance = tfMap.get(url);
 		return relevance==null ? 0: relevance;
 	}
 	
@@ -65,10 +100,33 @@ public class WikiSearch {
 	 * 
 	 * @param map
 	 */
-	private void print() {
+	public void print() {
 		List<Entry<String, Integer>> entries = sort();
-		for (Entry<String, Integer> entry: entries) {
-			System.out.println(entry);
+		if (entries.isEmpty()) {
+			System.out.println("No relevant pages found");
+		}
+		else {
+			for (Entry<String, Integer> entry: entries) {
+				System.out.println(entry);
+			}
+		}
+	}
+
+	public void printIDF() {
+		if (tfMap.entrySet().isEmpty()) {
+			System.out.println("No relevant pages found");	
+		}
+		else {
+			List<Entry<String, Double>> entries = sortIDF();
+			for (Entry<String, Double> entry: entries) {
+				if (entry.getValue() == 0) {
+					System.out.println("Query not specific enough");	
+					break;
+				}
+				else {
+					System.out.println(entry);
+				}
+			}
 		}
 	}
 	
@@ -80,22 +138,36 @@ public class WikiSearch {
 	 */
 	public WikiSearch or(WikiSearch that) {
         // FILL THIS IN!
-		Map<String, Integer> newMap = this.map;
+		Map<String, Integer> newMap = new HashMap<String, Integer>();
+		newMap.putAll(tfMap);
 
-		for (String url: that.map.keySet()) {
+		for (String url: that.tfMap.keySet()) {
 			if (newMap.containsKey(url)) {
-				Integer orRelevance = that.map.get(url) + this.map.get(url);
+				Integer orRelevance = that.tfMap.get(url) + this.tfMap.get(url);
 				newMap.put(url, orRelevance);
 			}
 			else {
-				newMap.put(url, that.map.get(url));
+				newMap.put(url, that.tfMap.get(url));
 			}
 		}
 
-		WikiSearch orSearch = new WikiSearch(newMap);
+		Map<String, Double> newMapIDF = new HashMap<String, Double>();
+		newMapIDF.putAll(tfidfMap);
+
+                for (String url: that.tfidfMap.keySet()) {
+                        if (newMapIDF.containsKey(url)) {
+                                Double orRelevance = that.tfidfMap.get(url) + this.tfidfMap.get(url);
+                                newMapIDF.put(url, orRelevance);
+                        }
+                        else {
+                                newMapIDF.put(url, that.tfidfMap.get(url));
+                        }
+                }
+		
+		WikiSearch orSearch = new WikiSearch(newMap, newMapIDF);
 		return orSearch;
 	}
-	
+
 	/**
 	 * Computes the intersection of two search results.
 	 * 
@@ -106,17 +178,34 @@ public class WikiSearch {
         // FILL THIS IN!
 		Map<String, Integer> newMap = new HashMap<String, Integer>();
 
-                for (String url: this.map.keySet()) {
-                        if (that.map.containsKey(url)) {
-                                Integer orRelevance = this.map.get(url) + that.map.get(url);
-				newMap.put(url, orRelevance);
+                for (String url: this.tfMap.keySet()) {
+                        if (that.tfMap.containsKey(url)) {
+				Integer thisCount = tfMap.get(url);
+				Integer thatCount = that.tfMap.get(url);
+                                Integer andRelevance = thisCount + thatCount;
+				newMap.put(url, andRelevance);
                         }
                 }
 
-                WikiSearch andSearch = new WikiSearch(newMap);
+		Map<String, Double> newMapIDF = new HashMap<String, Double>();
+
+		for (String url: this.tfidfMap.keySet()) {
+			if (that.tfidfMap.containsKey(url)) {
+				Double thisRelevance = this.tfidfMap.get(url);
+				Double thatRelevance = that.tfidfMap.get(url);
+				//System.out.println("thisRelevance = " + thisRelevance);
+				//System.out.println("thatRelevance = " + thatRelevance);
+				Double andRelevance = thisRelevance + thatRelevance;
+				newMapIDF.put(url, andRelevance);
+			}
+		}         
+
+	        WikiSearch andSearch = new WikiSearch(newMap, newMapIDF);
                 return andSearch;
 	}
 	
+	//public static WikiSearch and(WikiSearch this
+
 	/**
 	 * Computes the difference of two search results.
 	 * 
@@ -125,15 +214,25 @@ public class WikiSearch {
 	 */
 	public WikiSearch minus(WikiSearch that) {
         // FILL THIS IN!
-		Map<String, Integer> newMap = this.map;
+		Map<String, Integer> newMap = new HashMap<String, Integer>();
+		newMap.putAll(tfMap);
 
-		for (String url: that.map.keySet()) {
+		for (String url: that.tfMap.keySet()) {
 			if (newMap.containsKey(url)) {
 				newMap.remove(url);
 			}
 		}
+		
+		Map<String, Double> newMapIDF = new HashMap<String, Double>();
+		newMapIDF.putAll(tfidfMap);
+		
+		for (String url: that.tfidfMap.keySet()) {
+			if (newMapIDF.containsKey(url)) {
+				newMapIDF.remove(url);
+			}
+		}
 
-		WikiSearch minusSearch = new WikiSearch(newMap);
+		WikiSearch minusSearch = new WikiSearch(newMap, newMapIDF);
                 return minusSearch;
 	}
 	
@@ -157,8 +256,15 @@ public class WikiSearch {
 	public List<Entry<String, Integer>> sort() {
         // FILL THIS IN!
 		List<Entry<String, Integer>> entries = new LinkedList<Entry<String, Integer>>();
-		entries.addAll(map.entrySet());
+		entries.addAll(tfMap.entrySet());
 		Collections.sort(entries, comparator);
+		return entries;
+	}
+
+	public List<Entry<String, Double>> sortIDF() {
+		List<Entry<String, Double>> entries = new LinkedList<Entry<String, Double>>();
+		entries.addAll(tfidfMap.entrySet());
+		Collections.sort(entries, idfComparator);
 		return entries;
 	}
 
@@ -169,9 +275,30 @@ public class WikiSearch {
 	 * @param index
 	 * @return
 	 */
-	public static WikiSearch search(String term, JedisIndex index) {
+	public static Map<String, Double> searchIDF(String term, JedisIndex index) {
 		Map<String, Integer> map = index.getCounts(term);
-		return new WikiSearch(map);
+		Map<String, Double> idfMap = new HashMap<String, Double>();
+
+		double idfBase = (double) index.getNumPages()/index.getURLs(term).size();
+		double idf = Math.log10(idfBase);
+
+		Set<String> URLs = index.getURLs(term);
+		for (String url: URLs) {
+			int tf = map.get(url);
+			double tfidf = tf * idf;
+			idfMap.put(url, tfidf);
+		}
+		return idfMap;
+	}
+
+	public static Map<String, Integer> searchTF(String term, JedisIndex index) {
+		Map<String, Integer> map = index.getCounts(term);
+		return map;
+	}
+
+	public void completeSearch(String term, JedisIndex index) {
+		tfMap = searchTF(term, index);
+		tfidfMap = searchIDF(term, index);
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -180,27 +307,5 @@ public class WikiSearch {
 		Jedis jedis = JedisMaker.make();
 		JedisIndex index = new JedisIndex(jedis); 
 		
-		// search for the first term
-		String term1 = "java";
-		System.out.println("Query: " + term1);
-		WikiSearch search1 = search(term1, index);
-		search1.print();
-		
-		// search for the second term
-		String term2 = "programming";
-		System.out.println("Query: " + term2);
-		WikiSearch search2 = search(term2, index);
-		search2.print();
-		
-		// compute the intersection of the searches
-		System.out.println("Query: " + term1 + " AND " + term2);
-		WikiSearch intersection = search1.and(search2);
-		intersection.print();
-
-		// search for the
-		String term3 = "the";
-		System.out.println("Query: " + term3);
-		WikiSearch search3 = search(term3, index);
-		search3.print();
 	}
 }

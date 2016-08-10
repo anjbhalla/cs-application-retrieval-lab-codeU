@@ -21,6 +21,7 @@ import redis.clients.jedis.Transaction;
 public class JedisIndex {
 
 	private Jedis jedis;
+	int numPages;
 
 	/**
 	 * Constructor.
@@ -29,6 +30,7 @@ public class JedisIndex {
 	 */
 	public JedisIndex(Jedis jedis) {
 		this.jedis = jedis;
+		numPages = 0;
 	}
 	
 	/**
@@ -156,6 +158,7 @@ public class JedisIndex {
 		
 		// push the contents of the TermCounter to Redis
 		pushTermCounterToRedis(tc);
+		//numPages++;
 	}
 
 	/**
@@ -201,6 +204,10 @@ public class JedisIndex {
 				System.out.println("    " + url + " " + count);
 			}
 		}
+	}
+
+	public int getNumPages() {
+		return getURLs("the").size();
 	}
 
 	/**
@@ -302,15 +309,16 @@ public class JedisIndex {
 		Jedis jedis = JedisMaker.make();
 		JedisIndex index = new JedisIndex(jedis);
 		
-		//index.deleteTermCounters();
-		//index.deleteURLSets();
-		//index.deleteAllKeys();
+		index.deleteTermCounters();
+		index.deleteURLSets();
+		index.deleteAllKeys();
 		loadIndex(index);
 		
 		Map<String, Integer> map = index.getCountsFaster("the");
 		for (Entry<String, Integer> entry: map.entrySet()) {
 			System.out.println(entry);
 		}
+		System.out.println("Total number of pages: " + index.getNumPages());
 	}
 
 	/**
@@ -332,10 +340,43 @@ public class JedisIndex {
 		String res;
 		do {
 			res = wc.crawl(false);
-		//break;
+		break;
 		} while (res == null);
 		
-		//paragraphs = wf.readWikipedia(url);
-		//index.indexPage(url, paragraphs);
+		url = "https://en.wikipedia.org/wiki/Philosophy";
+		paragraphs = wf.readWikipedia(url);
+		index.indexPage(url, paragraphs);
+
+		url = "https://en.wikipedia.org/wiki/Modern_philosophy";
+                paragraphs = wf.readWikipedia(url);
+                index.indexPage(url, paragraphs);
+		
+		url = "https://en.wikipedia.org/wiki/Awareness";
+                paragraphs = wf.readWikipedia(url);
+                index.indexPage(url, paragraphs);
+
+		url = "https://en.wikipedia.org/wiki/Mathematics";
+                paragraphs = wf.readWikipedia(url);
+                index.indexPage(url, paragraphs);
+
+		url = "https://en.wikipedia.org/wiki/Science";
+                paragraphs = wf.readWikipedia(url);
+                index.indexPage(url, paragraphs);
+
+		url = "https://en.wikipedia.org/wiki/Knowledge";
+                paragraphs = wf.readWikipedia(url);
+                index.indexPage(url, paragraphs);
+
+		url = "https://en.wikipedia.org/wiki/Property_(philosophy)";
+                paragraphs = wf.readWikipedia(url);
+                index.indexPage(url, paragraphs);
+
+		url = "https://en.wikipedia.org/wiki/Consciousness";
+                paragraphs = wf.readWikipedia(url);
+                index.indexPage(url, paragraphs);
+
+		url = "https://en.wikipedia.org/wiki/Computer_science";
+                paragraphs = wf.readWikipedia(url);
+                index.indexPage(url, paragraphs);
 	}
 }
